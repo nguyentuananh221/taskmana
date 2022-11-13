@@ -7,11 +7,18 @@ import Loadingcontent from '../components/LoadingContent';
 import Classitem from '../components/ClassItem';
 import useIslogin from '../hooks/isLogIn';
 import { useNavigation } from '@react-navigation/native';
+import AddClassModal from "../components/AddClassModal";
+import getUserRole from "../hooks/getUserRole";
+import Custombutton from "../components/CustomButton";
+import COLORS from "../constants/colors";
+
 
 export default function ClassScreen(props) {
     const navigation = useNavigation()
     const userID = useVerifyToken()
     const isLogin = useIslogin()
+    const userRole = getUserRole()
+    const [isShow, setIsShow] = useState(false)
     useEffect(() => {
         if (!isLogin) {
             navigation.navigate('StartScreen')
@@ -30,6 +37,8 @@ export default function ClassScreen(props) {
 
     return (
     <Loadingcontent loading={loading}>
+          <AddClassModal isVisible={isShow}
+                            closeModal={() => setIsShow(false)}/>
         <View style ={styles.container} >
             <FlatList
             data={listClass}
@@ -37,6 +46,17 @@ export default function ClassScreen(props) {
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}/>
         </View>
+        {(userRole == 'GV') &&
+        <Custombutton   btnTitle={'Thêm lớp'+userRole}
+                        btnColor={COLORS.yellow}
+                        titleColor={COLORS.text}
+                        marginHorizontal={10}
+                        marginVertical={10}
+                        txtSize={20}
+                        btnHeight={10}
+                        onPress={() =>{
+                            setIsShow(true)
+                        } }/>}
     </Loadingcontent> 
     )
 }

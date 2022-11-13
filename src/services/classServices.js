@@ -21,6 +21,13 @@ const classServices = {
             .then(res => resolve(res.data))
             .catch(err => reject(err))
         })
+    },
+    addClass: async(data)=>{
+        return new Promise((resolve,reject)=>{
+            api.call().post(`/class`,data)
+                .then(res => resolve(res.data))
+                .catch(err => reject(err))
+        })
     }
 }
 
